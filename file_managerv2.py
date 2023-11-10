@@ -25,7 +25,10 @@ class Work(File):
 
 
 class Node:
-    '''Klasa stanowiaca wezel'''
+    '''Klasa stanowiaca wezel
+    dziecko moze mieć tylko jednego rodzica
+    rodzic może mieć dowolnie wiele dzieci
+    dziecko musi być dokładnie o jeden poziom wyżej niż rodzic'''
     def __init__(self, data, level=0, parent=None):
         self.data = data
         self.level = level
@@ -33,11 +36,15 @@ class Node:
         self.children = []
 
     def add_child(self, child_node):
+        '''Do przemyślenia czy ta funkcja jest potrzebna, może wprowadzać tylko bałagan'''
+        if child_node.get_level() != (self.get_level() + 1):
+            raise ValueError("Child level must be exactly one bigger than parents")
+        child_node.abandon_parent()
         self.children.append(child_node)
 
     def set_child(self, child_data):
         child = Node(child_data, self.level+1, parent=self)
-        self.add_child(child)
+        self.children.append(child)
         return child
 
     def get_level(self):
@@ -51,12 +58,16 @@ class Node:
 
     def get_parent(self):
         return self.parent
+    def abandon_parent(self):
+        if self.parent is not None:
+            self.parent.children.remove(self)
+            self.parent = None
 
-    def is_ancestor(self, another_node):
+    def is_child(self, another_node):
         if type(another_node) is not Node:
             raise TypeError
 
-        level_difference = self.get_level() - another_node.get_level
+        level_difference = self.get_level() - another_node.get_level()
         if level_difference < 1:
             return False
 

@@ -15,12 +15,31 @@ class TestFileManager(unittest.TestCase):
         self.assertEqual(0, self.testNode.level)
         self.assertEqual(None, self.testNode.parent)
 
-    def test_node_add_child(self):
-        pass
+    def test_node_set_child(self):
+        '''Sprawdzanie poprawności funkcji set_child'''
+        test_child_node = self.testNode.set_child('data')
+        self.assertEqual(self.testNode, test_child_node.get_parent())
+        self.assertEqual(1, test_child_node.get_level())
+        self.assertIn(test_child_node, self.testNode.children)
 
-    def test_node_is_ancestor(self):
-        pass
+    def test_node_is_child(self):
+        '''Sprawdzanie poprawności funkcji is_child'''
+        first_test_child_node = self.testNode.set_child('data')
+        second_test_child_node = first_test_child_node.set_child('data')
 
+        self.assertTrue(first_test_child_node.is_child(self.testNode))
+        self.assertTrue(second_test_child_node.is_child(self.testNode))
+        self.assertTrue(second_test_child_node.is_child(first_test_child_node))
+        self.assertFalse(first_test_child_node.is_child(second_test_child_node))
+    def test_add_child(self):
+        first_test_node = file_managerv2.Node('data')
+        with self.assertRaises(ValueError):
+            self.testNode.add_child(first_test_node)
+    def test_abandon_parent(self):
+        first_test_child_node = self.testNode.set_child('data')
+        first_test_child_node.abandon_parent()
+        self.assertNotIn(first_test_child_node, self.testNode.children)
+        self.assertEqual(first_test_child_node.get_parent(), None)
 
 
 if __name__ == '__main__':

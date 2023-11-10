@@ -8,9 +8,9 @@ def print_hi(name):
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    # adres = r'C:\Users\malis\Desktop\HP_1120'
-    # print(adres)
-    plik = fm.Folder(r'C:\Users\malis\Desktop\Muzyka\Elektroniczna')
-    plik.print_map()
+    m = None
+    if m == None:
+        print('raz')
+
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
