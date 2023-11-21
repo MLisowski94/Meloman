@@ -28,21 +28,27 @@ class Node:
     '''Klasa stanowiaca wezel
     dziecko moze mieć tylko jednego rodzica
     rodzic może mieć dowolnie wiele dzieci
-    dziecko musi być dokładnie o jeden poziom wyżej niż rodzic'''
+    dziecko musi być dokładnie o jeden poziom wyżej niż rodzic
+    Klasa ta ma stanowić abstrakcje struktury i nie powinna sama w sobie zawierać
+    założeń co do zawartości przechowywanych danych innych niż to że są stałe w oprębie
+    wszystkich powiązanych węzłów'''
     def __init__(self, data, level=0, parent=None):
         self.data = data
         self.level = level
         self.parent = parent
         self.children = []
 
-    def add_child(self, child_node):
-        '''Do przemyślenia czy ta funkcja jest potrzebna, może wprowadzać tylko bałagan'''
-        if child_node.get_level() != (self.get_level() + 1):
-            raise ValueError("Child level must be exactly one bigger than parents")
-        child_node.abandon_parent()
-        self.children.append(child_node)
+    # def add_child(self, child_node):
+    #     '''Do przemyślenia czy ta funkcja jest potrzebna, może wprowadzać tylko bałagan'''
+    #     if child_node.get_level() != (self.get_level() + 1):
+    #         raise ValueError("Child level must be exactly one bigger than parents")
+    #     child_node.abandon_parent()
+    #     self.children.append(child_node)
 
     def set_child(self, child_data):
+        '''Metoda tworząca nowy węzeł-dziecko sprawdzając czy typ danych jest taki sam'''
+        if type(child_data) is not type(self.data):
+            raise TypeError("Child data - {0} is not the same as parent data {1}".format(type(child_data), type(self.data)))
         child = Node(child_data, self.level+1, parent=self)
         self.children.append(child)
         return child
