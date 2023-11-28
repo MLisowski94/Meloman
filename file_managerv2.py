@@ -3,6 +3,7 @@ from pathlib import Path
 
 """
 Założenia wstępne
+TODO: określić dokładnie api File i Node
 """
 
 
@@ -17,21 +18,26 @@ class File:
     def __init__(self, name, adress):
         self.name = name
         self.adress = adress
+        self.node_list = []
 
     def __repr__(self):
         return f'Name: {self.name}, Adress: {self.adress}'
+
+
+    def add_node(self, node):
+        '''Funkcja przeznaczona do dodawaniu węzłów w skład których wchodzi data, jako argument przyjmuje
+        pare składająca się z tytułu Node i Node
+        TODO: Test'''
+        self.node_list.append((node.title, node))
+
+    def get_node_list(self):
+        '''TODO: Test'''
+        return self.node_list
     def check_file_format(self):
         pass
 
     def check_metadata(self):
         pass
-
-class Work(File):
-
-
-    def __init__(self, name, adress, metadata):
-        super(Work, self).__init__(name, adress)
-        self.metadata = metadata
 
 
 class Node:
@@ -42,19 +48,23 @@ class Node:
     *wyabstrahowanie z przechowywanych danych jedynie ich struktury
     TODO: Rozpisać strukture przy pomocy UML
     TODO: stworzyć interfejs przekazujący do data informacje o tym że wchodzi w skład Node
+    TODO: Zastanowić się czy condition function jest potrzebny
     '''
-    def __init__(self, data, level=0, parent=None, condition_function=lambda x, y: True,):
+    def __init__(self, data, title, level=0, parent=None, condition_function=lambda x, y: True,):
         self.data = data
+        self.title = title
         self.level = level
         self.parent = parent
         ''' Condition_function to funkcja która musi zostać spełniona by stworzyć children node       
         Opisać warunki dla condition function'''
 
         self.condition = condition_function
-        self.children = []
+        self.children_list = []
 
     def __repr__(self):
-        return f'Node -- Level: {self.level}, Data:({self.data})'
+        return f'Node {self.title}-- Level: {self.level}, Data:({self.data})'
+
+
     # def add_child(self, child_node):
     #     '''Do przemyślenia czy ta funkcja jest potrzebna, może wprowadzać tylko bałagan'''
     #     if child_node.get_level() != (self.get_level() + 1):
@@ -64,20 +74,31 @@ class Node:
 
     def set_child(self, child_data):
         '''Metoda tworząca nowy węzeł-dziecko
-        sprawdzając przy tym czy typy danych się zgadzają. Zapobiega to bałaganowi'''
+        sprawdzając przy tym czy typy danych się zgadzają. Zapobiega to bałaganowi
+        TODO: dopisać test sprawdzajaca zgodność tytułów'''
 
         if type(child_data) is not type(self.data):
             raise TypeError("Child data - {0} is not the same as parent data {1}".format(type(child_data), type(self.data)))
         if self.condition:
-            child = Node(child_data, self.level+1, parent=self)
-            self.children.append(child)
+            child = Node(child_data, self.title, self.level+1, parent=self)
+            self.children_list.append(child)
             return child
 
     def get_level(self):
         return self.level
 
     def get_child_list(self):
-        return self.children
+        return self.children_list
+
+    def get_ascendant_list(self):
+        '''Funkcja zwracająca liste wszystkich potomków, nie tylko dzieci
+        TODO: test'''
+        ascendant_list = []
+        for sub_node in self.children_list:
+            ascendant_list.append(sub_node)
+            if len(sub_node.children_list) > 0:
+                 ascendant_list.append(sub_node.get_ascendant_list())
+        return ascendant_list
 
     def get_data(self):
         return self.data
@@ -86,10 +107,10 @@ class Node:
         return self.parent
     def abandon_parent(self):
         if self.parent is not None:
-            self.parent.children.remove(self)
+            self.parent.children_list.remove(self)
             self.parent = None
 
-    def is_child(self, another_node):
+    def is_child_of(self, another_node):
         if type(another_node) is not Node:
             raise TypeError
 
@@ -107,22 +128,36 @@ class Node:
         else:
             return False
 
+    def does_data_belong_node(self, data):
+        '''Funkcja zwracająca wartość True lub False w zależności od tego czy
+        argument należy do Node
+        TODO: Dopisać testy'''
+        if data == self.data:
+            return True
+        else:
+            return False
 
 
 
 def map_path(path):
     '''rekurencyjna funckja zwracająca strukture węzłów reprezentujących wszelkie podfoldery i pliki
-    znajdujące się w podanej ścieżce
-    TODO: dopisać testy'''
-    base_file = pathlib.Path(path)
-    base_path_node = Node(File(base_file.name, base_file))
-    __map_path_iter(base_path_node)
-    return base_path_node
+    znajdujące się w podanej ścieżce, funkcja ta stnaowi kompozcyje Node i Data,
+    title powinno być krótką nazwą opisującą rodzaj struktury
+    TODO: dopisać testy
+    TODO: Upewnić się że powiązania mięzy strukturą Node i Data nie są ścisłe'''
+    base_file_path = pathlib.Path(path)
+    base_file = File(base_file_path.name, base_file_path)
+    base_node = Node(base_file, 'SCIEZKA')
+    base_file.add_node(base_node)
+    __map_path_iter(base_node)
+    return base_node
 def __map_path_iter(node):
-    "Część iteracyjna funkcji map_path"
+    ''' Funkcja pomocnicza funkcji map path
+    TODO: Dopisać test'''
     for file in node.data.adress.iterdir():
         sub_file = File(file.name, file)
         child_node = node.set_child(sub_file)
+        sub_file.add_node(child_node)
         if sub_file.adress.is_dir():
             __map_path_iter(child_node)
 

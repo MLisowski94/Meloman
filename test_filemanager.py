@@ -20,7 +20,7 @@ class TestFileManager(unittest.TestCase):
         test_child_node = self.testNode.set_child('data')
         self.assertEqual(self.testNode, test_child_node.get_parent())
         self.assertEqual(1, test_child_node.get_level())
-        self.assertIn(test_child_node, self.testNode.children)
+        self.assertIn(test_child_node, self.testNode.children_list)
 
     def test_node_set_child_with_diferent_data_type(self):
         with self.assertRaises(TypeError):
@@ -44,7 +44,7 @@ class TestFileManager(unittest.TestCase):
     def test_abandon_parent(self):
         first_test_child_node = self.testNode.set_child('data')
         first_test_child_node.abandon_parent()
-        self.assertNotIn(first_test_child_node, self.testNode.children)
+        self.assertNotIn(first_test_child_node, self.testNode.children_list)
         self.assertEqual(first_test_child_node.get_parent(), None)
 
 

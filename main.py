@@ -9,7 +9,7 @@ def print_hi(name):
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     x = fm.map_path(r"C:\Users\malis\Desktop\Doktorat")
-    print(x.get_child_list())
+    print(x.data.get_node_list())
 
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
