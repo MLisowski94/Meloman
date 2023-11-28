@@ -80,7 +80,7 @@ class Node:
         if type(child_data) is not type(self.data):
             raise TypeError("Child data - {0} is not the same as parent data {1}".format(type(child_data), type(self.data)))
         if self.condition:
-            child = Node(child_data, self.title, self.level+1, parent=self)
+            child = Node(child_data, self.title, self.level+1, parent=self, condition_function=self.condition)
             self.children_list.append(child)
             return child
 
@@ -97,7 +97,7 @@ class Node:
         for sub_node in self.children_list:
             ascendant_list.append(sub_node)
             if len(sub_node.children_list) > 0:
-                 ascendant_list.append(sub_node.get_ascendant_list())
+                ascendant_list = ascendant_list + sub_node.get_ascendant_list()
         return ascendant_list
 
     def get_data(self):

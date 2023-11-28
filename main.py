@@ -10,6 +10,8 @@ def print_hi(name):
 if __name__ == '__main__':
     x = fm.map_path(r"C:\Users\malis\Desktop\Doktorat")
     print(x.data.get_node_list())
-
+    lista = x.get_ascendant_list()
+    for y in lista:
+        print("{0}\n".format(y))
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
