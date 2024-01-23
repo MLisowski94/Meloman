@@ -7,6 +7,7 @@ class Node:
     *rodzic może mieć dowolnie wiele dzieci
     *dziecko musi być dokładnie o jeden poziom wyżej niż rodzic
     *wyabstrahowanie z przechowywanych danych jedynie ich struktury
+    *title zawiera informacje o tym jakie dane ma przedstawiać dany node
     TODO: stworzyć interfejs przekazujący do data informacje o tym że wchodzi w skład Node
     '''
     def __init__(self, data, title, level=0, parent=None):
@@ -30,8 +31,7 @@ class Node:
 
     def set_child(self, child_data):
         '''Metoda tworząca nowy węzeł-dziecko
-        sprawdzając przy tym czy typy danych się zgadzają. Zapobiega to bałaganowi
-        TODO: dopisać test sprawdzajaca zgodność tytułów'''
+        sprawdzając przy tym czy typy danych się zgadzają. Zapobiega to bałaganowi'''
 
         if type(child_data) is not type(self.data):
             raise TypeError("Child data - {0} is not the same as parent data {1}".format(type(child_data), type(self.data)))

@@ -8,10 +8,11 @@ def print_hi(name):
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    x = fm.map_path(r"C:\Users\malis\Desktop\Doktorat")
-    print(x.data.get_node_list())
-    lista = x.get_ascendant_list()
-    for y in lista:
-        print("{0}\n".format(y))
-
+    # x = fm.map_path(r"C:\Users\malis\Desktop\Doktorat")
+    # print(x.data.get_node_list())
+    # lista = x.get_ascendant_list()
+    # for y in lista:
+    #     print("{0}\n".format(y))
+    dict = {'adres':"adres"}
+    print(dict.get('adres'))
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
