@@ -4,6 +4,7 @@ from unittest.mock import patch, MagicMock
 from pathlib import Path
 import file_managerv2
 import node
+import file
 
 
 class TestNode(unittest.TestCase):
@@ -47,7 +48,17 @@ class TestNode(unittest.TestCase):
         first_test_child_node.abandon_parent()
         self.assertNotIn(first_test_child_node, self.testNode.children_list)
         self.assertEqual(first_test_child_node.get_parent(), None)
-
+class TestFile(unittest.TestCase):
+    '''
+    Testy sprawdzające czy podczas inicializacji obiektu wyrzucane są wyjątki
+    dotyczące nieprawidłowego typu adresu i adresu nie istniejącego
+    '''
+    def test_file_init_type_check(self):
+        with self.assertRaises(TypeError):
+            test_file = file.File('x', 'y')
+    def test_file_init_exist_check(self):
+        with self.assertRaises(ValueError):
+            test_file = file.File('x', Path('x'))
 
 if __name__ == '__main__':
     unittest.main()

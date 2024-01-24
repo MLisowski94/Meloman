@@ -1,5 +1,6 @@
 import file_managerv2 as fm
 from pathlib import Path
+import file
 
 def print_hi(name):
     # Use a breakpoint in the code line below to debug your script.
@@ -13,6 +14,12 @@ if __name__ == '__main__':
     # lista = x.get_ascendant_list()
     # for y in lista:
     #     print("{0}\n".format(y))
-    dict = {'adres':"adres"}
-    print(dict.get('adres'))
+    y = Path.cwd()/"test.txt"
+    # y.mkdir()
+
+    y.touch()
+    filex = file.File('x', y)
+    filex.change_file_adress(Path.cwd()/"test")
+
+
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/

@@ -16,7 +16,7 @@ def map_path(path):
     znajdujące się w podanej ścieżce, funkcja ta stnaowi kompozcyje Node i Data,
     title powinno być krótką nazwą opisującą rodzaj struktury
     TODO: dopisać testy
-    TODO: Upewnić się że powiązania mięzy strukturą Node i Data nie są ścisłe'''
+    TODO: zaktualizować funkcje'''
     base_file_path = pathlib.Path(path)
     base_file = File(base_file_path.name, base_file_path)
     base_node = Node(base_file, 'SCIEZKA')
