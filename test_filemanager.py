@@ -5,8 +5,6 @@ from pathlib import Path
 import file_managerv2
 import node
 import file
-
-
 class TestNode(unittest.TestCase):
     def setUp(self) -> None:
         self.testNode = node.Node('data', 'title')
@@ -59,18 +57,20 @@ class TestFile(unittest.TestCase):
     def test_file_init_exist_check(self):
         with self.assertRaises(ValueError):
             test_file = file.File('x', Path('x'))
-    @patch('file.Path.is_dir()', spec=pathlib.Path)
+    '''Do dokładnego przemyślenia o co chodzi z patchowaniem
+    '''
+    @patch('pathlib.Path', spec=Path)
     def test_file_change_adres_method(self, fake_path):
-        print('raz')
-        # fake_path = MagicMock(spec=pathlib.Path)
+        # print('raz')
+        # print(isinstance(fake_path, Path))
         # print(type(fake_path))
-        print(fake_path)
-        print(fake_path.is_dir())
-        fake_path.is_dir().return_value = 'dwa'
-        print(fake_path.is_dir())
-        fake_path.mkdir().assert_called_once()
+        print(fake_path.exists())
         test_file = file.File('x', fake_path)
+        fake_path.is_dir.return_value = False
         test_file.change_file_adress(fake_path)
-        print('is_dir return value' + fake_path.is_dir())
+        fake_path.mkdir.assert_called_once()
+
+
+
 if __name__ == '__main__':
     unittest.main()
