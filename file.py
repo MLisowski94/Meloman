@@ -27,12 +27,11 @@ class File:
         return f'Name: {self.name}, Adress: {self.data.get("adress")}'
 
     def change_file_adress(self, new_adress):
-    '''
-    TODO: Dopisać test
-    Należy podać adres ścieżki na której ma znaleźć się plik, komenda ta nie zmienia nazwy pliku
-    jedynie jego lokalizajce
-    '''
+        '''TODO: Dopisać test
+        Należy podać adres ścieżki na której ma znaleźć się plik, komenda ta nie zmienia nazwy pliku
+        jedynie jego lokalizajce'''
         print(new_adress)
+        print(new_adress.is_dir())
         if not isinstance(new_adress, Path):
             raise TypeError("adress musi być obiektem klasy Path")
         if not new_adress.is_dir():

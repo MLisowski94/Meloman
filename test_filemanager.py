@@ -59,6 +59,18 @@ class TestFile(unittest.TestCase):
     def test_file_init_exist_check(self):
         with self.assertRaises(ValueError):
             test_file = file.File('x', Path('x'))
-
+    @patch('file.Path.is_dir()', spec=pathlib.Path)
+    def test_file_change_adres_method(self, fake_path):
+        print('raz')
+        # fake_path = MagicMock(spec=pathlib.Path)
+        # print(type(fake_path))
+        print(fake_path)
+        print(fake_path.is_dir())
+        fake_path.is_dir().return_value = 'dwa'
+        print(fake_path.is_dir())
+        fake_path.mkdir().assert_called_once()
+        test_file = file.File('x', fake_path)
+        test_file.change_file_adress(fake_path)
+        print('is_dir return value' + fake_path.is_dir())
 if __name__ == '__main__':
     unittest.main()
