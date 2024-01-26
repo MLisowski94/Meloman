@@ -14,12 +14,6 @@ if __name__ == '__main__':
     # lista = x.get_ascendant_list()
     # for y in lista:
     #     print("{0}\n".format(y))
-    y = Path.cwd()/"test.txt"
-    # y.mkdir()
-
-    y.touch()
-    filex = file.File('x', y)
-    filex.change_file_adress(Path.cwd()/"test")
-
+    print("x")
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/

@@ -57,18 +57,20 @@ class TestFile(unittest.TestCase):
     def test_file_init_exist_check(self):
         with self.assertRaises(ValueError):
             test_file = file.File('x', Path('x'))
-    '''Do dokładnego przemyślenia o co chodzi z patchowaniem
-    '''
     @patch('pathlib.Path', spec=Path)
-    def test_file_change_adres_method(self, fake_path):
-        # print('raz')
-        # print(isinstance(fake_path, Path))
-        # print(type(fake_path))
-        print(fake_path.exists())
+    def test_file_change_adres_method_creating_dir(self, fake_path):
         test_file = file.File('x', fake_path)
         fake_path.is_dir.return_value = False
+        fake_path.exists.return_value = False
         test_file.change_file_adress(fake_path)
         fake_path.mkdir.assert_called_once()
+    def test_file_change_adres_method_value_error(self):
+        fake_path = MagicMock(spec=Path)
+        test_file = file.File('x', fake_path)
+        fake_path.is_dir.return_value = False
+        fake_path.exists.return_value = True
+        with self.assertRaises(ValueError):
+            test_file.change_file_adress(fake_path)
 
 
 
