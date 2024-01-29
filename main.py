@@ -15,5 +15,8 @@ if __name__ == '__main__':
     # for y in lista:
     #     print("{0}\n".format(y))
     print("x")
+    p = Path(r'C:\Users\malis\Documents\REAPER Media\bass.mp3')
+    print(p.suffix)
+
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
